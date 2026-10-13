@@ -121,10 +121,40 @@ int main() {
     // =================================================================
 
     cout << "=== Q1 ===\n";
+    
+    int noValid = 0;
+    double TotalWeight = 0;
+    int heaviestindex = 0;
+    int currentvalidrun = 0;
+    int longestvalidrun = 0;
 
+    for (double weight : morningWeights){
+        TotalWeight += weight;
 
+        if (weight > 0 && weight <= 80){
+            noValid ++;
+            currentvalidrun ++;
+        }
+        else{
+            currentvalidrun = 0;
+        }
 
+        if (currentvalidrun > longestvalidrun){
+            longestvalidrun = currentvalidrun;
+        }
+        
+    }
 
+    for (int i = 0; i < 12; i++){
+        if (morningWeights[i] > morningWeights[heaviestindex]){
+            heaviestindex = i;
+        }
+    }
+
+    cout << "Total: " << TotalWeight << " kg\n";
+    cout << "Valid: " << noValid << " of 12\n"; 
+    cout << "Heaviest: " << morningWeights[heaviestindex] << " kg at position " << heaviestindex << endl;
+    cout << "Longest valid run: " << longestvalidrun << endl;
 
     cout << "\n";
 

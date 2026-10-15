@@ -166,13 +166,57 @@ int main() {
 
     cout << "=== Q2 ===\n";
 
+    int noA = 0;
+    double totalA = 0.0;
+    int noB = 0;
+    double totalB = 0.0;
+    int noC = 0;
+    double totalC = 0.0;
 
+    for ( Delivery m : logbook){
+        if (m.grade == 'A'){
+            noA ++;
+            totalA += m.kg;
+        }
+        else{if (m.grade == 'B'){
+            noB ++;
+            totalB += m.kg;
+        }else{
+            noC ++;
+            totalC += m.kg;
+        }}
+    }
 
+    double averageA = totalA/float(noA);
+    double averageB = totalB/float(noB);
+    double averageC = totalC/float(noC);
+    char bestAverage;
+
+    cout << "Grade A: " << noA << " deliveries, " << totalA << "kg total, " << averageA << " kg average" << endl;
+    cout << "Grade B: " << noB << " deliveries, " << totalB << "kg total, " << averageB << " kg average" << endl;
+    cout << "Grade C: " << noC << " deliveries, " << totalC << "kg total, " << averageC << " kg average" << endl;
+
+    if (averageA > averageB){
+        if ((averageA) > (averageC)){
+            bestAverage = 'A';
+        }
+        else{
+            bestAverage = 'C';
+        }
+    }
+    else{
+        if (averageB > averageC){
+            bestAverage = 'B';
+        }
+        else{
+            bestAverage = 'C';
+        }
+    }
+
+    cout << "Best average: grade " << bestAverage << endl;
 
 
     cout << "\n";
-
-
     // =================================================================
     //  Q3  ·  WHO IS WHO                    (see README)
     //  Uses: logbook, and the findFarmer function you write below main

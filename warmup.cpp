@@ -84,6 +84,9 @@ void printBoard(const vector<int> &b) {
     cout << "\n";
 }
 
+int findFarmer(const vector<Delivery> &log, string name);
+double payment(double kg, char grade);
+
 
 int main() {
 
@@ -224,7 +227,52 @@ int main() {
 
     cout << "=== Q3 ===\n";
 
+    int Ipos = findFarmer(logbook, "Isanda");
+    int Mpos = findFarmer(logbook, "Mukmana");
 
+    cout << "findFarmer(Isanda) = " << Ipos << endl;
+    cout << "findFarmer(Mukamana) = " << Mpos << endl;
+
+    struct farmerStat {
+        string name;
+        int Nodeliveries;
+        double Totalkgs;
+    };
+
+    
+    
+
+    int mostdeliveries = 0;
+    int mostkgs = 0;
+
+
+    vector<farmerStat> log(5);
+    log[0].name = "Keza";
+    log[1].name = "Bonu";
+    log[2].name = "Isanda";
+    log[3].name = "Onyinye";
+    log[4].name = "Karimi";
+
+    for (Delivery record : logbook){
+        for (int i = 0; i < 5; i++){
+            if (log[i].name == record.farmer){
+                log[i].Nodeliveries ++;
+                log[i].Totalkgs += record.kg;
+            }
+        }
+    }
+
+    for (int i = 0; i < 5; i ++){
+        if( log[i].Nodeliveries > log[mostdeliveries].Nodeliveries){
+            mostdeliveries = i;
+        }
+        if ( log[i].Totalkgs > log[mostkgs].Totalkgs){
+            mostkgs = i;
+        }
+    }
+
+    cout << "Most deliveries: " << log[mostdeliveries].name << " (" << log[mostdeliveries].Nodeliveries << ")" << endl;
+    cout << "Most kg: " << log[mostkgs].name << " (" << log[mostkgs].Totalkgs << " kg)" << endl;
 
 
 
@@ -238,8 +286,23 @@ int main() {
 
     cout << "=== Q4 ===\n";
 
+    double totalPaid = 0;
 
+    for (Delivery record : logbook){
+        double amount = payment(record.kg, record.grade);
+        
+        if (totalPaid <= 100000){
+            totalPaid += amount;
+            cout << record.farmer << ' ' << record.kg << " kg grade " << record.grade << " -> " << amount << endl;
+        }
+        else{
+            amount *= 0.5;
+            totalPaid += amount;
+            cout << record.farmer << ' ' << record.kg << " kg grade " << record.grade << " -> " << amount << "  (halved)" << endl;
+        }
+    }
 
+    cout << "Total paid: " << totalPaid << endl;
 
 
     cout << "\n";
@@ -310,15 +373,32 @@ int main() {
 // Q3:  return the position of the first delivery by this farmer,
 //      or -1 if the farmer is not in the log at all.
 //
-// int findFarmer(const vector<Delivery> &log, string name) {
-//
-// }
+int findFarmer(const vector<Delivery> &log, string name) {
 
+    int position = -1;
 
+    for (int i = 0; i < 12; i ++){
+        if (position == -1 && log[i].farmer == name){
+            position = i;
+        }
+    }
+    return position;
+ }
 // Q4:  what one delivery earns, before any cap is applied.
 //      Grade A pays 10% above the rate, B pays the rate,
 //      anything else pays 20% below it. The rate is 450.
 //
-// double payment(double kg, char grade) {
-//
-// }
+double payment(double kg, char grade) {
+    double rate = 450;
+
+    if (grade == 'A'){
+        rate *= 1.1;
+    }
+    else{
+        if (grade == 'C'){
+            rate *= 0.8;
+        }
+    }
+
+    return rate * kg;
+}
